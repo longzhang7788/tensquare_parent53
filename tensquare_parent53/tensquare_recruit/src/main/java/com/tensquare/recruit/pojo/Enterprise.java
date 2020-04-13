@@ -16,8 +16,6 @@ public class Enterprise implements Serializable{
 	@Id
 	private String id;//ID
 
-
-	
 	private String name;//企业名称
 	private String summary;//企业简介
 	private String address;//企业地址
