@@ -51,7 +51,7 @@ public class LabelService {
            /**
             * @param root   跟对象，也就是要把条件封装到哪个对象中。where 类名=label getid
             * @param criteriaQuery  封装的是查询关键字，比如group by order by等
-            * @param criteriaBuilder 用来封装条件对象的
+            * @param criteriaBuilder 用来封装条件对象的,如果直接返回null，表示不需要任何条件
             * @return
             */
             @Override
