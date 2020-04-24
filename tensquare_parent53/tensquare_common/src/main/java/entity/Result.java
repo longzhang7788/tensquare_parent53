@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Result {
     private boolean flag;
     private Integer code;
@@ -21,5 +20,12 @@ public class Result {
         this.flag = flag;
         this.code = code;
         this.message = message;
+    }
+
+    public Result(boolean flag, Integer code, String message, Object data) {
+        this.flag = flag;
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 }
