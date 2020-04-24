@@ -2,11 +2,16 @@ package com.tensquare.base.controller;
 
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
+import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -14,16 +19,26 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
+@RefreshScope
 @RequestMapping("/label")
 public class LabelController {
     @Autowired
     private LabelService labelService;
+    @Autowired
+    private HttpServletRequest request;
+    @Value("${ip}")
+    private String ip;
     @GetMapping
     public Result findALll(){
+        System.out.println("ip为:"+ip);
+        //获取头信息
+        String header = request.getHeader("Authorization");
+        System.out.println(header);
         return new Result(true, StatusCode.OK,"查询成功",labelService.findAll());
     }
     @GetMapping("/{labelId}")
-    public Result findById(@PathVariable String labelId){
+    public Result findById(@PathVariable("labelId") String labelId){
+        System.out.println("22222222222222222");
         return new Result(true,StatusCode.OK,"查询成功",labelService.findById(labelId));
     }
     @PostMapping
@@ -45,6 +60,11 @@ public class LabelController {
     @PostMapping("/search")
     public Result findSearch(@RequestBody Label label){
         List<Label> list = labelService.findSearch(label);
-        return new Result(true,StatusCode.OK,"查询成功");
+        return new Result(true,StatusCode.OK,"查询成功",list);
+    }
+    @PostMapping("/search/{page}/{size}")
+    public Result pageQuery(@RequestBody Label label,@PathVariable int page,@PathVariable int size){
+       Page<Label> pageData = labelService.pageQuery(label,page,size);
+        return new Result(true,StatusCode.OK,"查询成功",new PageResult<Label>( pageData.getTotalElements(),pageData.getContent()));
     }
 }
